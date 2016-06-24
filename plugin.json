@@ -1,0 +1,6 @@
+{
+"name": "kwcnn Plugin",
+"description": "view kwcnn output data",
+"version": "0.0.1",
+"dependencies": []
+}
