@@ -23,9 +23,38 @@ girder.wrap(girder.views.ItemView, 'initialize', function (initialize, settings)
                         el: el
                     }).render();
                 }
+                if (file.name() == "activator_image_ids.json") {
+                    new girder.views.kwcnn_ActivationsView({
+                        file: file,
+                        parentView: this,
+                        item: this.model,
+                        el: el
+                    }).render();
+                }
+                if (file.name() == "description.json") {
+                    // There's another json file I need to display stuff.
+                    for (var j = 0; j < files.length; j++) {
+                        var file2 = files[j];
+                        if (file2.name() == "activation_image_ids.json") {
+                            new girder.views.olcd_ActivationsView({
+                                files: [file, file2],
+                                parentView: this,
+                                item: this.model,
+                                el: el
+                            }).render();
+                        }
+                    }
+                }
+                if (file.name() == "girder_data.json") {
+                    new girder.views.olcd_ActivationsView({
+                        file: file,
+                        parentView: this,
+                        item: this.model,
+                        el: el
+                    }).render();
+                }
             }
         }, this);
-
 
         if (_.has(meta, 'kwcnn')) {
              console.log('kwcnn');

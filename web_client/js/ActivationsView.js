@@ -1,40 +1,19 @@
 
 
-girder.views.kwcnn_ConfusionView = girder.View.extend({
+girder.views.kwcnn_ActivationsView = girder.View.extend({
     events: {
         'contextmenu .g-render-target': '_ignore',
         'mousedown .g-render-target': '_ignore',
         'selectstart .g-render-target': '_ignore',
         'mousewheel .g-render-target': '_ignore',
-        'click .confusion_element': '_element_callback',
     },
 
     _ignore: function () {
         return false;
     },
 
-    _element_callback: function(e) {
-        this.e = e;
-        //console.log(JSON.stringify(e));
-        $('#image_display').empty();
-        var ix = $(e.target).attr('data_ix');
-        var iy = $(e.target).attr('data_iy');
-        console.log(iy+" "+ix);
-        var imageIDs = this.data.confusion_image_ids[iy][ix];
-
-        $('#image_display').html("Classified as "+ix+": ");
-
-        for(var i = 0; i < imageIDs.length; i++){
-            $('<img>')
-                .appendTo($('#image_display'))
-                .attr("src", "/api/v1/file/"+imageIDs[i]+"/download");
-        }
-    },
-
     initialize: function (settings) {
         this.file = settings.file;
-        this.testImage = settings.testImage;
-        this.item = settings.item;
     },
 
     render: function () {
@@ -49,7 +28,7 @@ girder.views.kwcnn_ConfusionView = girder.View.extend({
             url: this.file.downloadUrl(),
             success: function(data,status) {
                 console.log(data);
-                self._initConfusion(data);
+                self._initActivations(data);
             },
             error: function() {
                 alert("json file failed");
@@ -57,15 +36,17 @@ girder.views.kwcnn_ConfusionView = girder.View.extend({
         });
     },
 
-    _initConfusion: function (data) {
+    _initActivations: function (data) {
         this.data = data;
-        this.$el.html(girder.templates.kwcnn_confusion(
-            {matrix: data.confusion_matrix,
-             image_url: this.testImage}));
         console.log(JSON.stringify(data));
+        this.$el.html(girder.templates.kwcnn_activations(
+            {image_ids: data}));
+        for(var i = 0; i < this.data.length; i++){
+            $('<img>')
+                .appendTo($('#g_activation_container'))
+                .attr("src", "/api/v1/file/"+this.data[i]+"/download");
+        }
     },
-
-    
 
 });
 

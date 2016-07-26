@@ -1,9 +1,10 @@
 h1 Confusion
-img(src=image_url,width="200")
 table
-    each row in matrix
+    each row,iy in matrix
          tr
-         each bin in row
-              td= bin
+         each bin,ix in row
+              td
+                  .confusion_element(data_ix=ix, data_iy=iy, style='width: 50px; border: 1px solid black; cursor: pointer')= bin
 
+#image_display
 
