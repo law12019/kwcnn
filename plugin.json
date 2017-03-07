@@ -1,6 +1,6 @@
 {
-"name": "kwcnn Plugin",
-"description": "view kwcnn output data",
+"name": "Vigilant Change Detection Plugin",
+"description": "Vigilant change detection",
 "version": "0.0.1",
 "dependencies": []
 }
